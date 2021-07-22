@@ -1,6 +1,9 @@
 {
   "manifest_version": 2,
   "name": "Save The Date",
+  "permissions": [
+    "contextMenus"
+  ],
   "version": "1.0",
   "description": "Highlight text with dates and save events to your Google Calendar.",
   "content_scripts": [
