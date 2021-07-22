@@ -1,23 +1,17 @@
+chrome.contextMenus.create({
+  title: "Add selected to calendar",
+  id: "add-to-calendar",
+  contexts: ["selection"]
+});
 
+chrome.contextMenus.onClicked.addListener(addSelectedToCal);
 
-console.log('Hello World');
-// try grabbing the body element after 3 seconds since gmail seems to never load
-// window.addEventListener('mouseup', () => {
-//   selection = getSelection().toString();
-//   console.log('date', selection.match(/Date: (.*)/)[1]);
-//   console.log('time', selection.match(/Time: (.*)/)[1])
-// })
-// console.log('selection: ', getSelection().toString());
-// console.log('date', getSelection().toString().match(/Date: (.*)/)[1]);
-//console.log(emailBody.outerHTML);
-// let bestringed;
-
-window.addEventListener('mouseup', () => {
-
+function addSelectedToCal(data) {
   // let emailBody = document.querySelector("body");
   // let bestringed = emailBody.outerHTML;
-
-  let bestringed = getSelection().toString();
+  console.log(data.selectionText);
+  // let bestringed = getSelection().toString();
+  let bestringed = data.selectionText;
   if (/Date: (.*)/.test(bestringed) && /Time: (.*)/.test(bestringed)) {
 
     let dateString = bestringed.match(/Date: (.*)/)[1];
@@ -77,15 +71,16 @@ window.addEventListener('mouseup', () => {
     const eventEndTime = getTimes(timeString, dateString, userTimeZone, false);
   
     if (dateString && timeString) {
-      const response = confirm(
-        `Click OK to add an event to your Google Calendar for the following time:
-Date: ${dateString.match(/[\w]*/)[0]} ${dateString.match(/[\d]+/)[0]}, ${dateString.match(/[\d]+/g)[1]} ${timeString}
-By the way, the Google Calender API would love to see your start and end dates in the following format if you can connect to it in the future:
-Event Start Time: ${eventStartTime}
-Event End Time: ${eventEndTime}`);
-      if (response === true) {
-        open('https://calendar.google.com');
-      }
+      window.open('https://calendar.google.com');
+//       const response = confirm(
+//         `Click OK to add an event to your Google Calendar for the following time:
+// Date: ${dateString.match(/[\w]*/)[0]} ${dateString.match(/[\d]+/)[0]}, ${dateString.match(/[\d]+/g)[1]} ${timeString}
+// By the way, the Google Calender API would love to see your start and end dates in the following format if you can connect to it in the future:
+// Event Start Time: ${eventStartTime}
+// Event End Time: ${eventEndTime}`);
+//       if (response === true) {
+//         open('https://calendar.google.com');
+//       }
     }
   
     console.log(userTimeZone)
@@ -150,17 +145,4 @@ Event End Time: ${eventEndTime}`);
   // request.execute(function(event) {
   //   appendPre('Event created: ' + event.htmlLink);
   // });
-
-}, 5000);
-
-//location.href = https://calendar.google.com/calendar
-// create some popup that allows the user to choose to create an event in Google Calendar
-// window.prompt("display text", "default text")
-// ex: let popup = prompt("Add this event to your calendar?", "[pass in the date and time here]")
-//if click OK, returns value in input value (default text, though they can change it), otherwise returns null
-
-// Figure out what Google Cal needs
-  // format of information
-  // how to send the information
-
-//{EDT: "America", EST: "America"}
+}
